@@ -16,3 +16,45 @@ create table Costumer
     Zip_Code_fk integer,
     FOREIGN KEY (Zip_Code_fk) REFERENCES Zips (Zip_Code)
 );
+
+create table Costumer_Order(
+    Order_ID integer PRIMARY KEY ,
+    Create_Date         text,
+    Label_Create_Date   text,
+    Postal_Service      text,
+    Service_Pickup_Date text,
+    Delivery_Date       text,
+    Destination_Address text,
+    Username_fk         text,
+    Zip_Code_fk integer,
+    FOREIGN KEY (Username_fk) REFERENCES Costumer (Username),
+    FOREIGN KEY (Zip_Code_fk) REFERENCES Zips (Zip_Code)
+);
+
+create table Books(
+    ISBN integer PRIMARY KEY,
+    Title text,
+    Year integer,
+    Price text,
+    Category text,
+    Publisher text,
+    Author text,
+    Publisher_ID integer
+);
+
+create table Costumer_Order_Invoice_Items(
+    Quantity integer,
+    Price    text,
+    ISBN_fk integer,
+    Warehouse_ID_fk integer,
+    Order_ID_fk integer,
+    FOREIGN KEY (ISBN_fk) REFERENCES Books (ISBN),
+    FOREIGN KEY (Warehouse_ID_fk) REFERENCES Warehouse (ID)
+);
+
+create table Warehouse(
+    Address text,
+    ID integer PRIMARY KEY,
+    Zip_Code_fk integer,
+    FOREIGN KEY (Zip_Code_fk) REFERENCES Zips (Zip_Code)
+);
