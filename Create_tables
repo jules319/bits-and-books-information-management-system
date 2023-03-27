@@ -1,0 +1,18 @@
+create table Zips
+(
+    State      text,
+    City       text,
+    Zip_Code integer PRIMARY KEY
+);
+
+create table Costumer
+(
+    First_Name text,
+    Last_Name text,
+    Username text PRIMARY KEY,
+    Password text,
+    Address text,
+    Email text,
+    Zip_Code_fk integer,
+    FOREIGN KEY (Zip_Code_fk) REFERENCES Zips (Zip_Code)
+);
