@@ -49,6 +49,14 @@ create table Warehouse(
     FOREIGN KEY (Zip_Code_fk) REFERENCES Zips (Zip_Code)
 );
 
+create table Warehouse_Inventory_Items(
+    Quantity integer,
+    Warehouse_ID_fk integer,
+    ISBN_fk integer,
+    FOREIGN KEY (Warehouse_ID_fk) REFERENCES Warehouse (ID),
+    FOREIGN KEY (ISBN_fk) REFERENCES Books (ISBN)
+);
+
 create table Books(
     ISBN integer PRIMARY KEY,
     Title text,
