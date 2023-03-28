@@ -69,7 +69,7 @@ create table Books(
 );
 
 CREATE TABLE Publishers(
-    id integer PRIMARY KEY,
+    Publisher_id integer PRIMARY KEY,
     Name text,
     Address text,
     Zip_Code_fk text,
@@ -91,6 +91,13 @@ CREATE TABLE CompanyOrders(
     FOREIGN KEY (Employee_Purchaser) REFERENCES Admin (Username)
 );
 
--- CREATE TABLE CompanyOrderInvoiceItems(
---
--- );
+CREATE TABLE CompanyOrderInvoiceItems(
+    Company_Purchase_id integer PRIMARY KEY,
+    Supplier_id integer PRIMARY KEY,
+    ISBN integer PRIMARY KEY,
+    Quantity integer,
+    Price integer,
+    FOREIGN KEY (Company_Purchase_id) REFERENCES CompanyOrders(Company_Purchase_id),
+    FOREIGN KEY (Supplier_id) REFERENCES Publishers(Publisher_id),
+    FOREIGN KEY (ISBN) REFERENCES Books(ISBN)
+);
