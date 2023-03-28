@@ -92,11 +92,12 @@ CREATE TABLE CompanyOrders(
 );
 
 CREATE TABLE CompanyOrderInvoiceItems(
-    Company_Purchase_id integer PRIMARY KEY,
-    Supplier_id integer PRIMARY KEY,
-    ISBN integer PRIMARY KEY,
+    Company_Purchase_id integer,
+    Supplier_id integer,
+    ISBN integer,
     Quantity integer,
     Price integer,
+    PRIMARY KEY (Company_Purchase_id, Supplier_id, ISBN),
     FOREIGN KEY (Company_Purchase_id) REFERENCES CompanyOrders(Company_Purchase_id),
     FOREIGN KEY (Supplier_id) REFERENCES Publishers(Publisher_id),
     FOREIGN KEY (ISBN) REFERENCES Books(ISBN)
