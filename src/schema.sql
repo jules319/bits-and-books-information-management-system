@@ -5,101 +5,126 @@ DROP TABLE IF EXISTS Customer_Order_Invoice_Items;
 DROP TABLE IF EXISTS Warehouse;
 DROP TABLE IF EXISTS Warehouse_Inventory_Items;
 DROP TABLE IF EXISTS Books;
+DROP TABLE IF EXISTS BookAuthors;
 DROP TABLE IF EXISTS Publishers;
 DROP TABLE IF EXISTS Admin;
 DROP TABLE IF EXISTS CompanyOrders;
 DROP TABLE IF EXISTS CompanyOrderInvoiceItems;
-create table Zips
+CREATE TABLE Zips
 (
-    state      text,
-    city       text,
-    county     text,
-    zip_code integer PRIMARY KEY
+    state      TEXT NOT NULL,
+    city       TEXT NOT NULL,
+    county     TEXT NOT NULL,
+    zip_code   INTEGER PRIMARY KEY
 );
 
-create table Customer
+CREATE TABLE Customer
 (
-    first_name text,
-    last_name text,
-    username text PRIMARY KEY,
-    password text,
-    address text,
-    email text,
-    zip_code_fk integer,
+    first_name TEXT NOT NULL,
+    last_name  TEXT NOT NULL,
+    username   TEXT PRIMARY KEY,
+    password   TEXT NOT NULL,
+    address    TEXT NOT NULL,
+    email      TEXT NOT NULL,
+    zip_code_fk INTEGER,
     FOREIGN KEY (zip_code_fk) REFERENCES Zips (zip_code)
 );
 
-create table Customer_Order(
-    order_id integer PRIMARY KEY ,
-    create_date         text,
-    label_create_date   text,
-    postal_service      text,
-    service_pickup_date text,
-    delivery_date       text,
-    destination_address text,
-    username_fk         text,
-    zip_code_fk integer,
+CREATE TABLE Customer_Order
+(
+    order_id             INTEGER PRIMARY KEY,
+    create_date          TEXT NOT NULL,
+    label_create_date    TEXT,
+    postal_service       TEXT,
+    service_pickup_date  TEXT,
+    delivery_date        TEXT,
+    destination_address  TEXT NOT NULL,
+    username_fk          TEXT,
+    zip_code_fk          INTEGER,
     FOREIGN KEY (username_fk) REFERENCES Customer (username),
     FOREIGN KEY (zip_code_fk) REFERENCES Zips (zip_code)
 );
 
-create table Customer_Order_Invoice_Items(
-    quantity integer,
-    price    text,
-    isbn_fk integer,
-    warehouse_id_fk integer,
-    order_id_fk integer,
+CREATE TABLE Customer_Order_Invoice_Items
+(
+    quantity        INTEGER NOT NULL,
+    price           REAL NOT NULL,
+    isbn_fk         INTEGER,
+    warehouse_id_fk INTEGER,
+    order_id_fk     INTEGER,
     FOREIGN KEY (isbn_fk) REFERENCES Books (isbn),
-    FOREIGN KEY (warehouse_id_fk) REFERENCES Warehouse (id)
+    FOREIGN KEY (warehouse_id_fk) REFERENCES Warehouse (id),
+    FOREIGN KEY (order_id_fk) REFERENCES Customer_Order (order_id)
 );
 
-
-create table Warehouse(
-    address text,
-    id integer PRIMARY KEY,
-    zip_code_fk integer,
+CREATE TABLE Warehouse
+(
+    address    TEXT NOT NULL,
+    id         INTEGER PRIMARY KEY,
+    zip_code_fk INTEGER,
     FOREIGN KEY (zip_code_fk) REFERENCES Zips (zip_code)
 );
 
-create table Warehouse_Inventory_Items(
-    quantity integer,
-    warehouse_id_fk integer,
-    isbn_fk integer,
+CREATE TABLE Warehouse_Inventory_Items
+(
+    quantity        INTEGER NOT NULL,
+    warehouse_id_fk INTEGER,
+    isbn_fk         INTEGER,
     FOREIGN KEY (warehouse_id_fk) REFERENCES Warehouse (id),
     FOREIGN KEY (isbn_fk) REFERENCES Books (isbn)
 );
 
-create table Books(
-    isbn integer PRIMARY KEY,
-    title text,
-    year integer,
-    price text,
-    category text,
-    publisher text,
-    author text,
-    publisher_id integer
+CREATE TABLE Books
+(
+    isbn          INTEGER PRIMARY KEY,
+    title         TEXT NOT NULL,
+    year          INTEGER,
+    price         REAL NOT NULL,
+    category      TEXT,
+    publisher     TEXT NOT NULL,
+    author        TEXT NOT NULL,
+    publisher_id  INTEGER,
+    FOREIGN KEY (publisher_id) REFERENCES Publishers (publisher_id)
 );
 
-CREATE TABLE Publishers(
-    publisher_id integer PRIMARY KEY,
-    name text,
-    address text,
-    zip_code_fk text,
+CREATE TABLE Authors
+(
+    author_id   INTEGER PRIMARY KEY,
+    first_name  TEXT NOT NULL,
+    last_name   TEXT NOT NULL
+);
+
+CREATE TABLE BookAuthors
+(
+    isbn       INTEGER,
+    author_id  INTEGER,
+    PRIMARY KEY (isbn, author_id),
+    FOREIGN KEY (isbn) REFERENCES Books (isbn),
+    FOREIGN KEY (author_id) REFERENCES Authors (author_id)
+);
+
+CREATE TABLE Publishers
+(
+    publisher_id INTEGER PRIMARY KEY,
+    name         TEXT NOT NULL,
+    zip_code_fk  INTEGER,
     FOREIGN KEY (zip_code_fk) REFERENCES Zips (zip_code)
 );
 
-CREATE TABLE Admin(
-    username text PRIMARY KEY,
-    first_name text,
-    last_name text,
-    password text
+CREATE TABLE Admin
+(
+    username   TEXT PRIMARY KEY,
+    first_name TEXT NOT NULL,
+    last_name  TEXT NOT NULL,
+    password   TEXT NOT NULL
 );
 
-CREATE TABLE CompanyOrders(
-    company_purchase_id integer PRIMARY KEY,
-    employee_purchaser text,
-    created_date text,
-    delivery_date text,
+CREATE TABLE CompanyOrders
+(
+    company_purchase_id INTEGER PRIMARY KEY,
+    employee_purchaser  TEXT,
+    created_date        TEXT NOT NULL,
+    delivery_date       TEXT,
     FOREIGN KEY (employee_purchaser) REFERENCES Admin (username)
 );
 
@@ -107,8 +132,8 @@ CREATE TABLE CompanyOrderInvoiceItems(
     company_purchase_id integer,
     supplier_id integer,
     isbn integer,
-    quantity integer,
-    price integer,
+    quantity            INTEGER NOT NULL,
+    price               REAL NOT NULL,
     PRIMARY KEY (company_purchase_id, supplier_id, isbn),
     FOREIGN KEY (company_purchase_id) REFERENCES CompanyOrders(company_purchase_id),
     FOREIGN KEY (supplier_id) REFERENCES Publishers(publisher_id),
