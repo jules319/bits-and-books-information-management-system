@@ -7,11 +7,11 @@ WHERE a.name LIKE '%Pratchett%' AND b.price < 10;
 
 -- b. Give all the titles and their dates of purchase made by a single customer (you choose how to designate
 -- the customer)
-SELECT b.title, co.create_date
+SELECT DISTINCT b.title, co.create_date
 FROM Books b
 JOIN Customer_Order_Invoice_Items coii ON b.isbn = coii.isbn_fk
 JOIN Customer_Order co ON coii.order_id_fk = co.order_id
-WHERE co.username_fk = 'customer_username';
+WHERE co.username_fk = 'atansly3';
 
 -- c. Find the titles and ISBNs for all books with less than 5 copies in stock
 SELECT b.title, b.isbn
@@ -36,7 +36,7 @@ WHERE a.name LIKE '%Pratchett%';
 SELECT co.username_fk, COUNT(*) as total_books_purchased
 FROM Customer_Order co
 JOIN Customer_Order_Invoice_Items coii ON co.order_id = coii.order_id_fk
-WHERE co.username_fk = 'customer_username'
+WHERE co.username_fk = 'atansly3'
 GROUP BY co.username_fk;
 
 -- f. Find the customer who has purchased the most books and the total number of books they have
