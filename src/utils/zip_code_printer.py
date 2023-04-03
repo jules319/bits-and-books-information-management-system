@@ -2,7 +2,7 @@ import sqlite3
 import random
 
 ZIP_CODES_TO_PRINT = 20
-DATABASE = '../../bookstore.sqlite'
+DATABASE = 'bookstore.sqlite'
 
 # Connect to the SQLite database
 conn = sqlite3.connect(DATABASE)
