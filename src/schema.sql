@@ -5,6 +5,7 @@ DROP TABLE IF EXISTS Customer_Order_Invoice_Items;
 DROP TABLE IF EXISTS Warehouse;
 DROP TABLE IF EXISTS Warehouse_Inventory_Items;
 DROP TABLE IF EXISTS Books;
+DROP TABLE IF EXISTS Authors;
 DROP TABLE IF EXISTS BookAuthors;
 DROP TABLE IF EXISTS Publishers;
 DROP TABLE IF EXISTS Admin;
@@ -20,14 +21,11 @@ CREATE TABLE Zips
 
 CREATE TABLE Customer
 (
+    username   TEXT PRIMARY KEY,
+    email      TEXT NOT NULL,
     first_name TEXT NOT NULL,
     last_name  TEXT NOT NULL,
-    username   TEXT PRIMARY KEY,
-    password   TEXT NOT NULL,
-    address    TEXT NOT NULL,
-    email      TEXT NOT NULL,
-    zip_code_fk INTEGER,
-    FOREIGN KEY (zip_code_fk) REFERENCES Zips (zip_code)
+    password   TEXT NOT NULL
 );
 
 CREATE TABLE Customer_Order
@@ -76,13 +74,12 @@ CREATE TABLE Warehouse_Inventory_Items
 
 CREATE TABLE Books
 (
-    isbn          INTEGER PRIMARY KEY,
+    isbn          TEXT PRIMARY KEY,
     title         TEXT NOT NULL,
     year          INTEGER,
     price         REAL NOT NULL,
     category      TEXT,
     publisher     TEXT NOT NULL,
-    author        TEXT NOT NULL,
     publisher_id  INTEGER,
     FOREIGN KEY (publisher_id) REFERENCES Publishers (publisher_id)
 );
@@ -90,8 +87,7 @@ CREATE TABLE Books
 CREATE TABLE Authors
 (
     author_id   INTEGER PRIMARY KEY,
-    first_name  TEXT NOT NULL,
-    last_name   TEXT NOT NULL
+    name  TEXT NOT NULL
 );
 
 CREATE TABLE BookAuthors
@@ -113,7 +109,8 @@ CREATE TABLE Publishers
 
 CREATE TABLE Admin
 (
-    username   TEXT PRIMARY KEY,
+    work_id TEXT PRIMARY KEY,
+    email TEXT NOT NULL,
     first_name TEXT NOT NULL,
     last_name  TEXT NOT NULL,
     password   TEXT NOT NULL
@@ -125,7 +122,7 @@ CREATE TABLE CompanyOrders
     employee_purchaser  TEXT,
     created_date        TEXT NOT NULL,
     delivery_date       TEXT,
-    FOREIGN KEY (employee_purchaser) REFERENCES Admin (username)
+    FOREIGN KEY (employee_purchaser) REFERENCES Admin (work_id)
 );
 
 CREATE TABLE CompanyOrderInvoiceItems(
