@@ -2,9 +2,10 @@ import sqlite3
 import random
 
 ZIP_CODES_TO_PRINT = 20
+DATABASE = '../../bookstore.sqlite'
 
 # Connect to the SQLite database
-conn = sqlite3.connect('../bookstore.sqlite')
+conn = sqlite3.connect(DATABASE)
 cursor = conn.cursor()
 
 # Query all zip codes from the 'zips' table

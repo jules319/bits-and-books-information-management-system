@@ -4,8 +4,8 @@ import pandas as pd
 import random
 import datetime
 
-DATABASE = '../bookstore.sqlite'
-EXCEL_FILE = '../src/data/proj-data.xlsx'
+DATABASE = '../../bookstore.sqlite'
+EXCEL_FILE = '../data/proj-data.xlsx'
 
 
 def connect_to_database(database_path: str) -> Tuple[sqlite3.Connection, sqlite3.Cursor]:

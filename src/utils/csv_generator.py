@@ -1,7 +1,7 @@
 import pandas as pd
 
 # Replace 'your_excel_file.xlsx' with the name of your Excel file
-EXCEL_FILE = '../src/data/proj-data.xlsx'
+EXCEL_FILE = '../data/proj-data.xlsx'
 
 # Load the Excel file
 xlsx = pd.read_excel(EXCEL_FILE, sheet_name=None, engine='openpyxl')
