@@ -1,3 +1,4 @@
 bookstore.sqlite
 identifier.sqlite
 .idea/
+.venv/
