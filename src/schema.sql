@@ -119,9 +119,11 @@ CREATE TABLE CompanyOrders
 (
     company_purchase_id INTEGER PRIMARY KEY,
     employee_purchaser  TEXT,
+    warehouse_id_fk INTEGER,
     created_date        TEXT NOT NULL,
     delivery_date       TEXT,
-    FOREIGN KEY (employee_purchaser) REFERENCES Admin (work_id)
+    FOREIGN KEY (employee_purchaser) REFERENCES Admin (work_id),
+    FOREIGN KEY (warehouse_id_fk) REFERENCES Warehouse (id)
 );
 
 CREATE TABLE CompanyOrderInvoiceItems(
