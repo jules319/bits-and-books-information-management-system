@@ -33,7 +33,6 @@ CREATE TABLE Customer_Order
     order_id             INTEGER PRIMARY KEY,
     create_date          TEXT NOT NULL,
     label_create_date    TEXT,
-    postal_service       TEXT,
     service_pickup_date  TEXT,
     delivery_date        TEXT,
     destination_address  TEXT NOT NULL,
