@@ -3,3 +3,4 @@ identifier.sqlite
 .idea/
 .venv/
 errors/
+.DS_Store
