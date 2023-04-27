@@ -49,6 +49,7 @@ CREATE TABLE Customer_Order_Invoice_Items
     isbn_fk         INTEGER,
     warehouse_id_fk INTEGER,
     order_id_fk     INTEGER,
+    PRIMARY KEY (order_id_fk, warehouse_id_fk, isbn_fk),
     FOREIGN KEY (isbn_fk) REFERENCES Books (isbn),
     FOREIGN KEY (warehouse_id_fk) REFERENCES Warehouse (id),
     FOREIGN KEY (order_id_fk) REFERENCES Customer_Order (order_id)
@@ -67,6 +68,7 @@ CREATE TABLE Warehouse_Inventory_Items
     quantity        INTEGER NOT NULL,
     warehouse_id_fk INTEGER,
     isbn_fk         INTEGER,
+    PRIMARY KEY (warehouse_id_fk, isbn_fk),
     FOREIGN KEY (warehouse_id_fk) REFERENCES Warehouse (id),
     FOREIGN KEY (isbn_fk) REFERENCES Books (isbn)
 );
