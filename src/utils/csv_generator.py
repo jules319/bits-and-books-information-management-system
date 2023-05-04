@@ -9,4 +9,4 @@ xlsx = pd.read_excel(EXCEL_FILE, sheet_name=None, engine='openpyxl')
 # Export each sheet into a separate CSV file
 for sheet_name, sheet_data in xlsx.items():
     print(f"Working on: {sheet_name}")
-    sheet_data.to_csv(f'/src/data/{sheet_name}.csv', index=False)
+    sheet_data.to_csv(f'src/data/{sheet_name}.csv', index=False)

@@ -11,6 +11,9 @@ DROP TABLE IF EXISTS Publishers;
 DROP TABLE IF EXISTS Admin;
 DROP TABLE IF EXISTS CompanyOrders;
 DROP TABLE IF EXISTS CompanyOrderInvoiceItems;
+DROP VIEW IF EXISTS total_sales_per_book;
+DROP VIEW IF EXISTS inventory_value_per_warehouse;
+
 CREATE TABLE Zips
 (
     state      TEXT NOT NULL,
@@ -139,3 +142,45 @@ CREATE TABLE CompanyOrderInvoiceItems(
     FOREIGN KEY (supplier_id) REFERENCES Publishers(publisher_id),
     FOREIGN KEY (isbn) REFERENCES Books(isbn)
 );
+
+-- Views
+-- View 1
+CREATE VIEW total_sales_per_book AS
+SELECT
+b.isbn,
+b.title,
+a.name AS author_name,
+SUM(coii.quantity) AS total_sales,
+SUM(coii.price * coii.quantity) AS total_revenue
+FROM
+Customer_Order_Invoice_Items coii
+JOIN Books b ON coii.isbn_fk = b.isbn
+JOIN BookAuthors ba ON b.isbn = ba.isbn
+JOIN Authors a ON ba.author_id = a.author_id
+GROUP BY
+b.isbn;
+
+-- View 2
+CREATE VIEW inventory_value_per_warehouse AS
+SELECT
+w.id AS warehouse_id,
+w.address AS warehouse_address,
+
+SUM(wii.quantity * b.price) AS total_inventory_value
+FROM
+Warehouse_Inventory_Items wii
+JOIN Warehouse w ON wii.warehouse_id_fk = w.id
+JOIN Books b ON wii.isbn_fk = b.isbn
+GROUP BY
+w.id;
+
+-- Indexes
+CREATE INDEX idx_customer_username ON Customer(username);
+
+CREATE INDEX idx_customer_order_create_date ON Customer_Order(create_date);
+
+CREATE INDEX idx_books_isbn ON Books(isbn);
+
+CREATE INDEX idx_warehouse_inventory_items_warehouse_id_fk ON Warehouse_Inventory_Items(warehouse_id_fk);
+
+CREATE INDEX idx_customer_order_invoice_items_order_id_fk ON Customer_Order_Invoice_Items(order_id_fk);

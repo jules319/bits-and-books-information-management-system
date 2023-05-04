@@ -16,10 +16,11 @@ def connect_to_database(database_path: str) -> Tuple[sqlite3.Connection, sqlite3
 
 def load_excel_data_into_tables(conn: sqlite3.Connection, excel_file_path: str, table_order: List[str]) -> pd.DataFrame:
     sheets = pd.read_excel(excel_file_path, sheet_name=None, engine='openpyxl')
-
     for table in table_order:
         if table in sheets:
             data = sheets[table]
+            if table == "Zips":
+                data = data.drop_duplicates(subset=['zip_code'])  # Remove duplicates based on the 'zip_code' column
             data.to_sql(table, conn, if_exists='append', index=False)
             print(f"Inserted data into {table}.")
     return sheets
@@ -34,11 +35,15 @@ def populate_warehouse_inventory(c: sqlite3.Cursor, books: List[Tuple[str, float
         # Generate a random number of books between 100 and 200 for the warehouse
         num_books = random.randint(100, 200)
 
+        seen_tuples = set()
         # Select random books and assign random quantities
         for _ in range(num_books):
             # Select a random book and its price
             isbn, _ = random.choice(books)
-
+            if (isbn, warehouse_id) in seen_tuples:
+                continue
+            else:
+                seen_tuples.add((isbn, warehouse_id))
             # Generate a random quantity between 1 and 10
             quantity = random.randint(1, 10)
 
@@ -71,7 +76,7 @@ def populate_customer_order_invoices(c: sqlite3.Cursor, num_orders: int, books: 
     for order_id in range(1, num_orders + 1):
         # Randomly select the number of items for this order (between 1 and 3)
         num_items = random.randint(1, 3)
-
+        seen_tuples = set()
         for _ in range(num_items):
             # Generate a random quantity between 1 and 2
             quantity = random.randint(1, 2)
@@ -80,6 +85,10 @@ def populate_customer_order_invoices(c: sqlite3.Cursor, num_orders: int, books: 
             isbn, price = random.choice(books)
             # Select a random warehouse id
             warehouse_id = random.choice(warehouse_ids)
+            if (isbn, price, warehouse_id) in seen_tuples:
+                continue
+            else:
+                seen_tuples.add((isbn, price, warehouse_id))
 
             # Insert the data into the Customer_Order_Invoice_Items table
             c.execute("""
